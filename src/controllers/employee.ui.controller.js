@@ -1,9 +1,31 @@
 import Employee from "../models/employee.models.js";
+import { Op } from "sequelize";
 
-// LIST
+// LIST (with search)
 export const listEmployeesPage = async (req, res) => {
-    const employees = await Employee.findAll({ order: [["id", "DESC"]], raw: true, });
-    res.render("employees/list", { employees });
+    try {
+        const q = (req.query.q || "").trim();
+
+        const where = q
+            ? {
+                [Op.or]: [
+                    { fullName: { [Op.like]: `%${q}%` } },
+                    { email: { [Op.like]: `%${q}%` } },
+                    { phone: { [Op.like]: `%${q}%` } },
+                ],
+            }
+            : undefined;
+
+        const employees = await Employee.findAll({
+            where,
+            order: [["id", "DESC"]],
+            raw: true,
+        });
+
+        res.render("employees/list", { employees, q }); // ✅ send q back to view
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
 };
 
 // CREATE PAGE
