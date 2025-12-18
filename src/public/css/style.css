@@ -10,3 +10,11 @@ body {
     border-radius: 10px;
     overflow: hidden;
 }
+
+.pagination .page-link {
+    border: 1px solid #e6e8ef;
+}
+
+.pagination .page-item.active .page-link {
+    font-weight: 600;
+}

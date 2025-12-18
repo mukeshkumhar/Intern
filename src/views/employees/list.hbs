@@ -69,3 +69,45 @@
     {{/if}}
   </tbody>
 </table>
+
+{{#if pagination}}
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mt-3 p-3 bg-white border rounded-3">
+    
+    <div class="small text-muted">
+      Page <b>{{pagination.from}}</b> - <b>{{pagination.to}}</b> of <b>{{pagination.totalCount}}</b>
+      {{!-- <span class="ms-2">| Page <b>{{pagination.page}}</b> of <b>{{pagination.totalPages}}</b></span> --}}
+    </div>
+
+    {{#if pagination.show}}
+      <nav aria-label="Employees pagination">
+        <ul class="pagination pagination-sm mb-0">
+
+          <li class="page-item {{#unless pagination.hasPrev}}disabled{{/unless}}">
+            <a class="page-link rounded-pill px-3"
+               href="{{#if pagination.hasPrev}}{{pagination.prevUrl}}{{else}}#{{/if}}">
+              ← Prev
+            </a>
+          </li>
+
+          {{#each pagination.pages}}
+            <li class="page-item {{#if this.active}}active{{/if}}">
+              <a class="page-link rounded-pill px-3 mx-1" href="{{this.url}}">
+                {{this.num}}
+              </a>
+            </li>
+          {{/each}}
+
+          <li class="page-item {{#unless pagination.hasNext}}disabled{{/unless}}">
+            <a class="page-link rounded-pill px-3"
+               href="{{#if pagination.hasNext}}{{pagination.nextUrl}}{{else}}#{{/if}}">
+              Next →
+            </a>
+          </li>
+
+        </ul>
+      </nav>
+    {{/if}}
+
+  </div>
+{{/if}}
+
