@@ -1,0 +1,37 @@
+<h3 class="mb-3">Documents - {{employee.fullName}} | Id:{{employee.id}}</h3>
+
+<a class="btn btn-primary mb-3" href="/employees/{{employee.id}}/documents/new">+ Upload Document</a>
+<a class="btn btn-secondary mb-3" href="/employees">Back</a>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Type</th>
+      <th>File</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {{#if documents.length}}
+      {{#each documents}}
+        <tr>
+          <td>{{id}}</td>
+          <td>{{docType}}</td>
+          <td><a href="{{filePath}}" target="_blank">{{originalName}}</a></td>
+          <td>
+            <a class="btn btn-info btn-sm" href="/employees/{{employeeId}}/documents/{{id}}">View</a>
+            <a class="btn btn-warning btn-sm" href="/employees/{{employeeId}}/documents/{{id}}/edit">Edit</a>
+
+            <form method="POST" action="/employees/{{employeeId}}/documents/{{id}}?_method=DELETE" style="display:inline">
+              <button class="btn btn-danger btn-sm" type="submit" onclick="return confirm('Delete this document?')">Delete</button>
+            </form>
+          </td>
+        </tr>
+      {{/each}}
+    {{else}}
+      <tr><td colspan="4" class="text-center">No documents uploaded</td></tr>
+    {{/if}}
+  </tbody>
+</table>

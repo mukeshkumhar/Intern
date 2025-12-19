@@ -1,0 +1,12 @@
+<h3 class="mb-3">Document</h3>
+
+<div class="card p-3">
+  <p><b>Employee:</b> {{employee.fullName}} ({{employee.id}})</p>
+  <p><b>Type:</b> {{document.docType}}</p>
+  <p><b>File:</b> <a href="{{document.filePath}}" target="_blank">{{document.originalName}}</a></p>
+
+  <div class="d-flex gap-2">
+    <a class="btn btn-warning" href="/employees/{{employee.id}}/documents/{{document.id}}/edit">Edit</a>
+    <a class="btn btn-secondary" href="/employees/{{employee.id}}/documents">Back</a>
+  </div>
+</div>

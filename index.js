@@ -5,9 +5,15 @@ import employeeUiRoutes from "./src/routes/employee.ui.routes.js";
 import methodOverride from "method-override";
 import { engine } from "express-handlebars";
 import  Sequelize from "sequelize";
+import swaggerUi from "swagger-ui-express";
+import { swaggerSpec } from "./src/swagger.js";
+import path from "path";
+import employeeDocumentRoutes from "./src/routes/employeeDocument.ui.routes.js";
+
 
 const app = express();
 app.use(express.json());
+app.use(express.static("public"));
 
 
 
@@ -57,5 +63,9 @@ await sequelize.sync();
 app.use("/", employeeUiRoutes);
 
 app.use("/api/employees", employeeRoutes);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+app.use("/employees/:employeeId/documents", employeeDocumentRoutes);
+
 
 app.listen(3000, () => console.log("Server running on http://localhost:3000"));

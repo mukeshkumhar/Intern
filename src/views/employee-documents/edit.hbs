@@ -1,0 +1,21 @@
+<h3 class="mb-3">Edit Document</h3>
+
+<form method="POST" action="/employees/{{employee.id}}/documents/{{document.id}}?_method=PUT" enctype="multipart/form-data">
+  <div class="mb-3">
+    <label class="form-label">Document Type</label>
+    <input class="form-control" name="docType" value="{{document.docType}}" required />
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Current File</label><br />
+    <a href="{{document.filePath}}" target="_blank">{{document.originalName}}</a>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Replace PDF (optional)</label>
+    <input class="form-control" type="file" name="documentFile" />
+  </div>
+
+  <button class="btn btn-success" type="submit">Update</button>
+  <a class="btn btn-secondary" href="/employees/{{employee.id}}/documents/{{document.id}}">Cancel</a>
+</form>
