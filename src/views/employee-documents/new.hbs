@@ -1,16 +1,18 @@
-<h3 class="mb-3">Upload Document - {{employee.fullName}}</h3>
+<h3 class="mb-3">Upload Documents - {{employee.fullName}} (ID: {{employee.id}})</h3>
 
 <form method="POST" action="/employees/{{employee.id}}/documents" enctype="multipart/form-data">
   <div class="mb-3">
     <label class="form-label">Document Type</label>
-    <input class="form-control" name="docType" placeholder="Aadhaar / PAN / ..." required />
+    <input class="form-control" name="docType" placeholder="Semester Result / Aadhaar / ..." required />
+    <div class="form-text">This docType will be saved for all uploaded files.</div>
   </div>
 
   <div class="mb-3">
-    <label class="form-label">PDF File</label>
-    <input class="form-control" type="file" name="documentFile" required />
+    <label class="form-label">Upload PDFs (multiple)</label>
+    <input class="form-control" type="file" name="documentFiles" multiple required />
+    <div class="form-text">Select 8 PDFs together (max 10MB each).</div>
   </div>
 
   <button class="btn btn-success" type="submit">Upload</button>
-  <a class="btn btn-secondary" href="/employees/{{employee.id}}/documents">Cancel</a>
+  <a class="btn btn-secondary" href="/employees/{{employee.id}}/documents">Back</a>
 </form>

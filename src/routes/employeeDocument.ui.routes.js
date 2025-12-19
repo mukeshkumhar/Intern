@@ -15,11 +15,13 @@ const router = Router({ mergeParams: true });
 
 router.get("/", listDocs);
 router.get("/new", newDocForm);
-router.post("/", uploadEmployeeDoc.single("documentFile"), createDoc);
+// router.post("/", uploadEmployeeDoc.single("documentFile"), createDoc);
 
 router.get("/:docId", viewDoc);
 router.get("/:docId/edit", editDocForm);
 router.put("/:docId", uploadEmployeeDoc.single("documentFile"), updateDoc);
+router.post("/", uploadEmployeeDoc.array("documentFiles", 20), createDoc);
+
 router.delete("/:docId", deleteDoc);
 
 export default router;

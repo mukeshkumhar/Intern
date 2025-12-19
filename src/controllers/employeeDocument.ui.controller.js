@@ -29,6 +29,38 @@ export const newDocForm = async (req, res) => {
 };
 
 // POST /employees/:employeeId/documents
+// export const createDoc = async (req, res) => {
+//     try {
+//         const employeeId = Number(req.params.employeeId);
+
+//         const employee = await Employee.findByPk(employeeId, { raw: true });
+//         if (!employee) return res.status(404).send("Employee not found");
+
+//         if (!req.file) return res.status(400).send("Document file is required");
+
+//         const relativePath =
+//             req.file.path.replace(/^public[\\/]/, "/").split(path.sep).join("/");
+
+//         await EmployeeDocument.create({
+//             employeeId,
+//             docType: (req.body.docType || "OTHER").trim(),
+
+//             originalName: req.file.originalname,
+//             fileName: req.file.filename,
+//             filePath: relativePath,
+
+//             mimeType: req.file.mimetype,
+//             fileSize: req.file.size,
+//         });
+
+//         return res.redirect(`/employees/${employeeId}/documents`);
+//     } catch (err) {
+//         console.log(err);
+//         return res.status(500).send(err.message);
+//     }
+// };
+
+// POST /employees/:employeeId/documents (multiple)
 export const createDoc = async (req, res) => {
     try {
         const employeeId = Number(req.params.employeeId);
@@ -36,22 +68,30 @@ export const createDoc = async (req, res) => {
         const employee = await Employee.findByPk(employeeId, { raw: true });
         if (!employee) return res.status(404).send("Employee not found");
 
-        if (!req.file) return res.status(400).send("Document file is required");
+        if (!req.files || req.files.length === 0) {
+            return res.status(400).send("At least one PDF is required");
+        }
 
-        const relativePath =
-            req.file.path.replace(/^public[\\/]/, "/").split(path.sep).join("/");
+        const docType = (req.body.docType || "OTHER").trim();
 
-        await EmployeeDocument.create({
-            employeeId,
-            docType: (req.body.docType || "OTHER").trim(),
+        const rows = req.files.map((f) => {
+            const relativePath = f.path
+                .replace(/^public[\\/]/, "/")
+                .split(path.sep)
+                .join("/");
 
-            originalName: req.file.originalname,
-            fileName: req.file.filename,
-            filePath: relativePath,
-
-            mimeType: req.file.mimetype,
-            fileSize: req.file.size,
+            return {
+                employeeId,
+                docType,
+                originalName: f.originalname,
+                fileName: f.filename,
+                filePath: relativePath,
+                mimeType: f.mimetype,
+                fileSize: f.size,
+            };
         });
+
+        await EmployeeDocument.bulkCreate(rows);
 
         return res.redirect(`/employees/${employeeId}/documents`);
     } catch (err) {
